@@ -1,16 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardTitle, CardBody, CardText, CardImg, CardImgOverlay } from 'reactstrap';
 
-class DishDetail extends Component
-{
-    constructor(props)
-    {
-        super(props);
-    }
+
     
 	
 
-    renderComments(commentArr)
+    function RenderComments({commentArr})
     {
         const comments = commentArr.map((comment)=>{
             const positionOfT = (comment.date).indexOf("T");
@@ -32,7 +27,7 @@ class DishDetail extends Component
         );
     }
     
-    renderDish(dishToBeDisplayed)
+    function RenderDish({dishToBeDisplayed})
     {
         return(
             <div className="row"> 
@@ -52,8 +47,9 @@ class DishDetail extends Component
         );
     }
     
-    render()
+    const DishDetail = (props) =>
     {
+        
         const dishToBeDisplayed = this.props.selectedDish;
 		console.log("DishDetail Component Render is invoked");
         console.log(dishToBeDisplayed);
@@ -68,6 +64,6 @@ class DishDetail extends Component
         else return(<div></div>);
     
     }
-}
+
 
 export default DishDetail;
