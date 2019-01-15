@@ -1,69 +1,83 @@
 import React from 'react';
-import { Card, CardTitle, CardBody, CardText, CardImg, CardImgOverlay } from 'reactstrap';
+import { Card, CardTitle, CardBody, CardText, CardImg, CardImgOverlay, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 
     
 	
 
-    function RenderComments({commentArr})
+    
+    
+    function RenderDish({dish})
     {
-        const comments = commentArr.map((comment)=>{
-            const positionOfT = (comment.date).indexOf("T");
-            const dateOfComment = (comment.date).slice(0, positionOfT); 
-            return(
-                <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p> <em>{comment.author}, {dateOfComment}</em></p>
-                </li>
-            )
-        });
+        return(
+                <div className="col-12 col-md-5 m-1">
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name}/>
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+                </div>
+        );
+    }
+
+    function RenderComments({comments})
+    {
+        if (comments != null)
         return (
              <div className="col-12 col-md-5 m-1">
                 <h4><strong>Comments</strong></h4>
                 <ul className="list-unstyled">
-                    {comments}
+                    {comments.map((comment) => {
+                        return (
+                            <li key={comment.id}>
+                            <p>{comment.comment}</p>
+                            <p>-- {comment.author} </p>
+                            </li>
+                        );
+                        })}
                 </ul>
             </div>
         );
+        else
+            return(
+                <div></div>
+            );
     }
     
-    function RenderDish({dishToBeDisplayed})
-    {
-        return(
-            <div className="row"> 
-                <div className="col-12 col-md-5 m-1">
-                <Card>
-                    <CardImg top src={dishToBeDisplayed.image} alt={dishToBeDisplayed.name}/>
-                    <CardBody>
-                        <CardTitle>{dishToBeDisplayed.name}</CardTitle>
-                        <CardText>{dishToBeDisplayed.description}</CardText>
-                    </CardBody>
-                </Card>
-                </div>
-                    {this.renderComments(dishToBeDisplayed.comments)}
-            </div>
-           
-            
-        );
-    }
     
     const DishDetail = (props) =>
     {
-        
-        const dishToBeDisplayed = this.props.selectedDish;
-		console.log("DishDetail Component Render is invoked");
-        console.log(dishToBeDisplayed);
-        if(dishToBeDisplayed != null)
-        {
-            return(
+        if (props.dish != null)
+            return (
                 <div className="container">
-                    {this.renderDish(dishToBeDisplayed)}
+                <div className="row">
+                    <Breadcrumb>
+
+                        <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                        <hr />
+                    </div>                
                 </div>
-            );            
-        }
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderDish dish={props.dish} />
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        <RenderComments comments={props.comments} />
+                    </div>
+                </div>
+                </div>
+            );           
+        
         else return(<div></div>);
-    
     }
+    
 
 
 export default DishDetail;
